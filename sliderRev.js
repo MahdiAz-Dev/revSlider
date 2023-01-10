@@ -722,7 +722,7 @@ interact('.dargable-pointer')
     }
   })
 
- Mouse pointer
+ //Mouse pointer
  $("#sortable").mousemove(function (event) {
    if(dargStatus === false) {
      const bottom = document.getElementById("tm-rul").firstChild.getBoundingClientRect().bottom
