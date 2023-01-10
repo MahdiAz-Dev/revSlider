@@ -722,32 +722,32 @@ interact('.dargable-pointer')
     }
   })
 
-//? Mouse pointer
-// $("#sortable").mousemove(function (event) {
-//   if(dargStatus === false) {
-//     const bottom = document.getElementById("tm-rul").firstChild.getBoundingClientRect().bottom
-//     $('.mouse-pointer').css('height', `${$('.moment-pointer').height()}px`)
-//     if (fsLine <= event.originalEvent.clientX <= lsLine && event.originalEvent.clientY > bottom) {
-//       $(".mouse-pointer").css('display', 'block')
-//       $(".mouse-pointer").css('left', `${(event.originalEvent.clientX - 2)}px`)
-//       const off = $('.mouse-pointer')[0].offsetLeft + $('#sortable').scrollLeft()
-//       const msPos = ((off - fsLine) * allDuration) / allWidth
-//       var minute = Math.floor((msPos) / 60000)
-//       var seconde = Math.floor((msPos - minute * 60000) / 1000)
-//       var hSeconde = Math.floor((msPos - (seconde * 1000 + minute * 60000)) / 10)
-//       $("#count-mouse").html(`${minute < 10 ? "0" + minute : minute} : ${seconde < 10 ? "0" + seconde : seconde} : ${hSeconde < 10 ? "0" + hSeconde : hSeconde}`)
-//     }
-//     if (event.originalEvent.clientX < fsLine || event.originalEvent.clientX > lsLine) {
-//       $(".mouse-pointer").css('display', 'none')
-//     }
-//   }
-// });
-// $("#sortable").mouseleave(function () {
-//   $(".mouse-pointer").css('display', 'none')
-// });
-// $("#tm-controller").mousemove(function () {
-//   $(".mouse-pointer").css('display', 'none')
-// });
+ Mouse pointer
+ $("#sortable").mousemove(function (event) {
+   if(dargStatus === false) {
+     const bottom = document.getElementById("tm-rul").firstChild.getBoundingClientRect().bottom
+     $('.mouse-pointer').css('height', `${$('.moment-pointer').height()}px`)
+     if (fsLine <= event.originalEvent.clientX <= lsLine && event.originalEvent.clientY > bottom) {
+       $(".mouse-pointer").css('display', 'block')
+       $(".mouse-pointer").css('left', `${(event.originalEvent.clientX - 2)}px`)
+       const off = $('.mouse-pointer')[0].offsetLeft + $('#sortable').scrollLeft()
+       const msPos = ((off - fsLine) * allDuration) / allWidth
+       var minute = Math.floor((msPos) / 60000)
+       var seconde = Math.floor((msPos - minute * 60000) / 1000)
+       var hSeconde = Math.floor((msPos - (seconde * 1000 + minute * 60000)) / 10)
+       $("#count-mouse").html(`${minute < 10 ? "0" + minute : minute} : ${seconde < 10 ? "0" + seconde : seconde} : ${hSeconde < 10 ? "0" + hSeconde : hSeconde}`)
+     }
+     if (event.originalEvent.clientX < fsLine || event.originalEvent.clientX > lsLine) {
+       $(".mouse-pointer").css('display', 'none')
+     }
+   }
+ });
+ $("#sortable").mouseleave(function () {
+   $(".mouse-pointer").css('display', 'none')
+ });
+ $("#tm-controller").mousemove(function () {
+   $(".mouse-pointer").css('display', 'none')
+ });
 
 //? On flags
 $(".frame-line").click(function (event) {
