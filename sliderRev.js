@@ -443,7 +443,6 @@ interact('.frame-line')
           const next = $(`#${target.id}`).next()
           if (prev.length > 0 && next.length > 0) {
             if (event.rect.left > prev[0].getBoundingClientRect().right && event.rect.right < next[0].getBoundingClientRect().left) {
-              console.log('ok');
               var x = (parseFloat(target.getAttribute('data-x')) || 0)
               target.style.minWidth = event.rect.width + 'px'
               x += event.deltaRect.left
@@ -473,7 +472,7 @@ interact('.frame-line')
         }
       },
       end(event) {
-        const delay = ((event.target.getBoundingClientRect().left - fsLine) * allDuration) / allWidth
+        const delay = ((event.target.getBoundingClientRect().left - fsLine + $('#sortable').scrollLeft()) * allDuration) / allWidth
         const duration = (event.target.getBoundingClientRect().width * allDuration) / allWidth
         const animId = event.target.id
         for (const obj of keyFrames) {
@@ -516,7 +515,7 @@ interact('.outer-frame-line')
         }
       },
       end(event) {
-        const delay = ((event.target.getBoundingClientRect().left - fsLine) * allDuration) / allWidth
+        const delay = ((event.target.getBoundingClientRect().left - fsLine + $('#sortable').scrollLeft()) * allDuration) / allWidth
         const duration = (event.target.getBoundingClientRect().width * allDuration) / allWidth
         const animId = event.target.id
         for (const obj of keyFrames) {
@@ -555,7 +554,7 @@ interact('.frame-line')
     listeners: {
       move: dragMoveListener,
       end(event) {
-        const delay = ((event.target.getBoundingClientRect().left - fsLine) * allDuration) / allWidth
+        const delay = ((event.target.getBoundingClientRect().left - fsLine + $('#sortable').scrollLeft()) * allDuration) / allWidth
         const animId = event.target.id
         for (const obj of keyFrames) {
           if (obj.id === animId) {
