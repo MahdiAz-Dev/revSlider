@@ -389,7 +389,6 @@ const outerPlay = () => {
 
 //* Sortable rows
 $("#sortable").sortable({
-  zIndex: 100,
   items: "> .sort-row",
   grid: [10, 30],
   axis: "y",
