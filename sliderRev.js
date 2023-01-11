@@ -250,7 +250,7 @@ $(".la-play").click(function () {
     $(".la-play").css('display', 'block')
     $('.moment-pointer').css('left', `${fsLine}px`)
     $('.moment-pointer').removeClass('dargable-pointer')
-    $('.moment-pointer').css('transform', `translate(0px , ${$("#sortable").scrollTop()}px)`)
+    $('.moment-pointer').css('transform', `translate(0px , 0px)`)
   }
   tl = gsap.timeline()
   $(this).css('display', 'none')
@@ -347,9 +347,9 @@ const outerPlay = () => {
     $(".la-play").css('display', 'block')
     $('.moment-pointer').css('left', `${fsLine}px`)
     $('.moment-pointer').removeClass('dargable-pointer')
-    $('.moment-pointer').css('transform', `translate(0px , ${$("#sortable").scrollTop()}px)`)
+    $('.moment-pointer').css('transform', `translate(0px , 0px)`)
   }
-  $('.moment-pointer').css('transform', `translate(0px, ${$("#sortable").scrollTop()}px)`)
+  $('.moment-pointer').css('transform', `translate(0px, 0px)`)
   tl = gsap.timeline()
   $(this).css('display', 'none')
   $('.la-square').css('display', 'block')
@@ -389,6 +389,7 @@ const outerPlay = () => {
 
 //* Sortable rows
 $("#sortable").sortable({
+  zIndex: 100,
   items: "> .sort-row",
   grid: [10, 30],
   axis: "y",
