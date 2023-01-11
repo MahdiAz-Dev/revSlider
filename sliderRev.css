@@ -393,3 +393,17 @@ body {
 .sort-row > .tm-left-col > .left-side-line-ob {
     padding-left: .75rem;
 }
+.outer-frame-line {
+    background-color: #4f5660;
+    height: 50%;
+    top: 25%;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .8rem;
+    color: #fff;
+    cursor: ew-resize;
+    position: absolute;
+    z-index: 2;
+}
