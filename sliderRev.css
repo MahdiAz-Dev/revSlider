@@ -239,7 +239,6 @@ body {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    transition: all .3s;
     cursor: pointer;
     min-width: max-content;
 }
