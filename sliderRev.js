@@ -87,9 +87,9 @@ const keyFrames = [
     direction: 'normal',
     fillMode: 'forwards',
     x: 400,
-    rotation: 360	,
-    role:'',
-    ease:'none'
+    rotation: 360,
+    role: '',
+    ease: 'none'
 
   },
   {
@@ -103,8 +103,8 @@ const keyFrames = [
     direction: 'normal',
     fillMode: 'forwards',
     x: 1000,
-    role:'outer',
-    ease:'none'
+    role: 'outer',
+    ease: 'none'
 
   },
   {
@@ -117,10 +117,10 @@ const keyFrames = [
     iterationCount: '',
     direction: 'normal',
     fillMode: 'forwards',
-    fontSize:30,
-    color:'red',
-    role:'',
-    ease:'none'
+    fontSize: 30,
+    color: 'red',
+    role: '',
+    ease: 'none'
   },
   {
     id: "key-4",
@@ -133,8 +133,8 @@ const keyFrames = [
     direction: 'normal',
     fillMode: 'forwards',
     rotationY: 60,
-    role:'',
-    ease:'none'
+    role: '',
+    ease: 'none'
   },
   {
     id: "key-3",
@@ -146,9 +146,9 @@ const keyFrames = [
     iterationCount: '',
     direction: 'normal',
     fillMode: 'forwards',
-    backgroundColor : 'blue',
-    role:'',
-    ease:'none'
+    backgroundColor: 'blue',
+    role: '',
+    ease: 'none'
   }
 
 ]
@@ -174,7 +174,7 @@ const allWidth = lsLine - fsLine;
 //! render objects
 objectData.sort(function (a, b) { return b.order - a.order })
 for (const obj of objectData) {
-  if(obj.role === 'BG') {
+  if (obj.role === 'BG') {
     $(".tm-section").append(`<div id=${obj.id} class='tm-row bg-row'><div class=tm-left-col>
         <div class=left-side-line-ob><i class="las la-image"></i> ${obj.name}</div>
       </div><div id='${obj.id}-line' class= 'tm-right-col align-center '></div></div>`)
@@ -200,9 +200,6 @@ for (let i = 0; i < objectData.length; i++) {
       const delay = ((keyFrames[j].delay * allWidth) / allDuration)
       $(x).append(`<div id=${keyFrames[j].id} class=frame-line style="left:${delay + 10}px ; min-width:${width}px">${keyFrames[j].duration}</div>`)
     }
-
-    //! Define keyframes
-    // $.keyframe.define(keyFrames[j].keyframe);
   }
 }
 var tl
@@ -215,90 +212,105 @@ $(".tm-right-col").css("width", `${lineWidth}px`)
 const ctrl = $('#tm-controller > .tm-left-col')
 $('.controller-cover').css('top', `${ctrl.offset().top}px`)
 var waitPoint = ((wait * allWidth) / allDuration)
-$( document ).ready(function () {
+$(document).ready(function () {
   tl = gsap.timeline()
   for (const a of keyFrames) {
-    if(a.role !== 'outer') {
-      tl.to(`#${a.mid}-el` , {
-        x:a.x,
-        duration:(a.duration / 1000),
-        rotation:a.rotation,
-        rotationY:a.rotationY,
-        fontSize:a.fontSize,
-        color:a.color,
-        ease:a.ease,
-        backgroundColor:a.backgroundColor
-      } , (a.delay / 1000));
+    if (a.role !== 'outer') {
+      tl.to(`#${a.mid}-el`, {
+        x: a.x,
+        duration: (a.duration / 1000),
+        rotation: a.rotation,
+        rotationY: a.rotationY,
+        fontSize: a.fontSize,
+        color: a.color,
+        ease: a.ease,
+        backgroundColor: a.backgroundColor
+      }, (a.delay / 1000));
     }
-    }
+  }
   tl.pause()
 })
 
 //? Play func  
 var timer;
 $(".la-play").click(function () {
-  clickCounter = clickCounter +1
+  clickCounter = clickCounter + 1
   if (tl.paused() === true) {
     tl.restart();
     tl.kill();
-    clearInterval(timer)
-    $('.moment-pointer').css('background-color' , '')
-    $('#count-up').css({'background-color':'#0d0d0e' , 'border-color' : '#777c80'})
+    clearTimeout(timer)
+    $('.moment-pointer').css('background-color', '')
+    $('#count-up').css({ 'background-color': '#0d0d0e', 'border-color': '#777c80' })
     $("#count-up").html('EDITOR')
     $(".la-square").css('display', 'none')
     $(".la-play").css('display', 'block')
-    $('.moment-pointer').css('left' , `331px`)
+    $('.moment-pointer').css('left', `${fsLine}px`)
     $('.moment-pointer').removeClass('dargable-pointer')
     $('.moment-pointer').css('transform', `translate(0px , ${$("#sortable").scrollTop()}px)`)
   }
   tl = gsap.timeline()
   $(this).css('display', 'none')
   $('.la-square').css('display', 'block')
-  $('.moment-pointer').css('background-color' , 'red')
+  $('.moment-pointer').css('background-color', 'red')
   $('.moment-pointer').removeClass('dargable-pointer')
-  $('#count-up').css({'background-color':'red' , 'border-color' : 'red'})
-  
+  $('#count-up').css({ 'background-color': 'red', 'border-color': 'red' })
+
   var waitPoint = ((wait * allWidth) / allDuration)
   for (const a of keyFrames) {
-    if(a.role !== 'outer') {
-      tl.to(`#${a.mid}-el` , {
-        x:a.x,
-        duration:(a.duration / 1000),
-        rotation:a.rotation,
-        rotationY:a.rotationY,
-        fontSize:a.fontSize,
-        color:a.color,
-        ease:a.ease,
-        backgroundColor:a.backgroundColor
-      } , (a.delay / 1000));
+    if (a.role !== 'outer') {
+      tl.to(`#${a.mid}-el`, {
+        x: a.x,
+        duration: (a.duration / 1000),
+        rotation: a.rotation,
+        rotationY: a.rotationY,
+        fontSize: a.fontSize,
+        color: a.color,
+        ease: a.ease,
+        backgroundColor: a.backgroundColor
+      }, (a.delay / 1000));
     }
-    tl.to(".moment-pointer" , {
-      x:waitPoint,
-      duration:(wait / 1000),
-      ease:'none',
+    tl.to(".moment-pointer", {
+      x: waitPoint,
+      duration: (wait / 1000),
+      ease: 'none',
       onComplete: function () {
         tl.restart();
         tl.kill();
-        clearInterval(timer)
-        $("#count-up").html("00 : 00 : 00")
+        clearTimeout(timer)
+        $('.moment-pointer').css('background-color', '')
+        $('#count-up').css({ 'background-color': '#0d0d0e', 'border-color': '#777c80' })
+        $("#count-up").html('EDITOR')
+        $('.moment-pointer').addClass('dargable-pointer')
         $(".la-square").css('display', 'none')
         $(".la-play").css('display', 'block')
       }
-    } , 0);
+    }, 0);
   }
 
   //? Time counter
   hunSecond = 0
-  timer = setInterval(upTimer, 10)
-  async function upTimer() {
-    await ++hunSecond
+  timerA()
+});
+
+function timerA() {
+  var interval = 10;
+  var expected = Date.now() + interval;
+  timer = setTimeout(step, interval);
+  function step() {
+    var dt = Date.now() - expected;
+    // if (dt > interval) {
+    //   // something really bad happened. Maybe the browser (tab) was inactive?
+    //   // possibly special handling to avoid futile "catch up" run
+    // }
+    ++hunSecond
     var minute = Math.floor((hunSecond) / 6000)
     var seconde = Math.floor((hunSecond - minute * 6000) / 100)
     var hSeconde = Math.floor(hunSecond - (seconde * 100 + minute * 6000))
     $("#count-up").html(`${minute < 10 ? "0" + minute : minute} : ${seconde < 10 ? "0" + seconde : seconde} : ${hSeconde < 10 ? "0" + hSeconde : hSeconde}`)
-
+    expected += interval;
+    timer = setTimeout(step, Math.max(0, interval - dt));
   }
-});
+}
 
 
 //? Reset func 
@@ -307,9 +319,9 @@ $('.la-square').click(function () {
   $('.la-play').css('display', 'block')
   tl.restart();
   tl.kill();
-  clearInterval(timer)
-  $('.moment-pointer').css('background-color' , '')
-  $('#count-up').css({'background-color':'#0d0d0e' , 'border-color' : '#777c80'})
+  clearTimeout(timer)
+  $('.moment-pointer').css('background-color', '')
+  $('#count-up').css({ 'background-color': '#0d0d0e', 'border-color': '#777c80' })
   $("#count-up").html('EDITOR')
   $(".la-square").css('display', 'none')
   $(".la-play").css('display', 'block')
@@ -319,53 +331,55 @@ $('.la-square').click(function () {
 
 // ? outer play
 const outerPlay = () => {
-  clickCounter = clickCounter +1
+  clickCounter = clickCounter + 1
   if (tl.paused() === true) {
     tl.restart();
     tl.kill();
-    clearInterval(timer)
-    $('.moment-pointer').css('background-color' , '')
-    $('#count-up').css({'background-color':'#0d0d0e' , 'border-color' : '#777c80'})
+    clearTimeout(timer)
+    $('.moment-pointer').css('background-color', '')
+    $('#count-up').css({ 'background-color': '#0d0d0e', 'border-color': '#777c80' })
     $("#count-up").html('EDITOR')
     $(".la-square").css('display', 'none')
     $(".la-play").css('display', 'block')
-    $('.moment-pointer').css('left' , `331px`)
+    $('.moment-pointer').css('left', `${fsLine}px`)
     $('.moment-pointer').removeClass('dargable-pointer')
-    // $('.moment-pointer').css('transform', `translate3d(0px, ${$("#sortable").scrollTop()}px, 0px)`)
     $('.moment-pointer').css('transform', `translate(0px , ${$("#sortable").scrollTop()}px)`)
   }
   $('.moment-pointer').css('transform', `translate(0px, ${$("#sortable").scrollTop()}px)`)
   tl = gsap.timeline()
   $(this).css('display', 'none')
   $('.la-square').css('display', 'block')
-  $('.moment-pointer').css('background-color' , 'red')
+  $('.moment-pointer').css('background-color', 'red')
   $('.moment-pointer').removeClass('dargable-pointer')
-  $('#count-up').css({'background-color':'red' , 'border-color' : 'red'})
-  
+  $('#count-up').css({ 'background-color': 'red', 'border-color': 'red' })
+
   for (const a of keyFrames) {
-      tl.to(`#${a.mid}-el` , {
-        x:a.x,
-        duration:(a.duration / 1000),
-        rotation:a.rotation,
-        rotationY:a.rotationY,
-        fontSize:a.fontSize,
-        color:a.color,
-        ease:a.ease,
-        backgroundColor:a.backgroundColor
-      } , (a.delay / 1000));
-    tl.to(".moment-pointer" , {
-      x:allWidth,
-      duration:(allDuration / 1000),
-      ease:'none',
+    tl.to(`#${a.mid}-el`, {
+      x: a.x,
+      duration: (a.duration / 1000),
+      rotation: a.rotation,
+      rotationY: a.rotationY,
+      fontSize: a.fontSize,
+      color: a.color,
+      ease: a.ease,
+      backgroundColor: a.backgroundColor
+    }, (a.delay / 1000));
+    tl.to(".moment-pointer", {
+      x: allWidth,
+      duration: (allDuration / 1000),
+      ease: 'none',
       onComplete: function () {
         tl.restart();
         tl.kill();
-        clearInterval(timer)
-        $("#count-up").html("00 : 00 : 00")
+        clearTimeout(timer)
+        $('.moment-pointer').css('background-color', '')
+        $('#count-up').css({ 'background-color': '#0d0d0e', 'border-color': '#777c80' })
+        $("#count-up").html('EDITOR')
+        $('.moment-pointer').addClass('dargable-pointer')
         $(".la-square").css('display', 'none')
         $(".la-play").css('display', 'block')
       }
-    } , 0);
+    }, 0);
   }
 }
 
@@ -388,7 +402,6 @@ const parentLeft = document.getElementById("tm-rul").firstChild.getBoundingClien
 const parentRight = document.getElementById("tm-rul").lastChild.getBoundingClientRect()
 interact('.frame-line')
   .resizable({
-    // resize from all edges and corners
     edges: { left: true, right: true },
 
     listeners: {
@@ -398,53 +411,27 @@ interact('.frame-line')
         if (sibling.length === 0) {
           if (event.rect.left > parentLeft.right && event.rect.right < parentRight.left) {
             var x = (parseFloat(target.getAttribute('data-x')) || 0)
-            var y = (parseFloat(target.getAttribute('data-y')) || 0)
-
-            // update the element's style
             target.style.minWidth = event.rect.width + 'px'
-            // translate when resizing from top or left edges
             x += event.deltaRect.left
-            y += event.deltaRect.top
-
-            target.style.transform = 'translate(' + x + 'px,' + y + 'px)'
-
+            target.style.transform = 'translate(' + x + 'px,' + 0 + 'px)'
             target.setAttribute('data-x', x)
-            target.setAttribute('data-y', y)
             target.textContent = Math.round((event.rect.width * allDuration) / allWidth)
           }
         } else if (sibling.length === 1) {
           const siblingRect = sibling[0].getBoundingClientRect()
           if (event.rect.left > parentLeft.right && event.rect.right < parentRight.left && siblingRect.left > event.rect.right) {
             var x = (parseFloat(target.getAttribute('data-x')) || 0)
-            var y = (parseFloat(target.getAttribute('data-y')) || 0)
-
-            // update the element's style
             target.style.minWidth = event.rect.width + 'px'
-
-            // translate when resizing from top or left edges
             x += event.deltaRect.left
-            y += event.deltaRect.top
-
-            target.style.transform = 'translate(' + x + 'px,' + y + 'px)'
-
+            target.style.transform = 'translate(' + x + 'px,' + 0 + 'px)'
             target.setAttribute('data-x', x)
-            target.setAttribute('data-y', y)
             target.textContent = Math.round((event.rect.width * allDuration) / allWidth)
           } else if (event.rect.left > parentLeft.right && event.rect.right < parentRight.left && siblingRect.right < event.rect.left) {
             var x = (parseFloat(target.getAttribute('data-x')) || 0)
-            var y = (parseFloat(target.getAttribute('data-y')) || 0)
-
-            // update the element's style
             target.style.minWidth = event.rect.width + 'px'
-
-            // translate when resizing from top or left edges
             x += event.deltaRect.left
-            y += event.deltaRect.top
-
-            target.style.transform = 'translate(' + x + 'px,' + y + 'px)'
-
+            target.style.transform = 'translate(' + x + 'px,' + 0 + 'px)'
             target.setAttribute('data-x', x)
-            target.setAttribute('data-y', y)
             target.textContent = Math.round((event.rect.width * allDuration) / allWidth)
           }
         } else if (sibling.length > 1) {
@@ -453,55 +440,28 @@ interact('.frame-line')
           if (prev.length > 0 && next.length > 0) {
             if (event.rect.left > parentLeft.right && event.rect.right < parentRight.left && event.rect.left > prev[0].getBoundingClientRect().right && event.rect.right < next[0].getBoundingClientRect().left) {
               var x = (parseFloat(target.getAttribute('data-x')) || 0)
-              var y = (parseFloat(target.getAttribute('data-y')) || 0)
-
-              // update the element's style
               target.style.minWidth = event.rect.width + 'px'
-
-              // translate when resizing from top or left edges
               x += event.deltaRect.left
-              y += event.deltaRect.top
-
-              target.style.transform = 'translate(' + x + 'px,' + y + 'px)'
-
+              target.style.transform = 'translate(' + x + 'px,' + 0 + 'px)'
               target.setAttribute('data-x', x)
-              target.setAttribute('data-y', y)
               target.textContent = Math.round((event.rect.width * allDuration) / allWidth)
             }
           } else if (next.length === 0) {
             if (event.rect.left > parentLeft.right && event.rect.right < parentRight.left && event.rect.left > prev[0].getBoundingClientRect().right) {
               var x = (parseFloat(target.getAttribute('data-x')) || 0)
-              var y = (parseFloat(target.getAttribute('data-y')) || 0)
-
-              // update the element's style
               target.style.minWidth = event.rect.width + 'px'
-
-              // translate when resizing from top or left edges
               x += event.deltaRect.left
-              y += event.deltaRect.top
-
-              target.style.transform = 'translate(' + x + 'px,' + y + 'px)'
-
+              target.style.transform = 'translate(' + x + 'px,' + 0 + 'px)'
               target.setAttribute('data-x', x)
-              target.setAttribute('data-y', y)
               target.textContent = Math.round((event.rect.width * allDuration) / allWidth)
             }
           } else if (prev.length === 0) {
             if (event.rect.left > parentLeft.right && event.rect.right < parentRight.left && event.rect.right < next[0].getBoundingClientRect().left) {
               var x = (parseFloat(target.getAttribute('data-x')) || 0)
-              var y = (parseFloat(target.getAttribute('data-y')) || 0)
-
-              // update the element's style
               target.style.minWidth = event.rect.width + 'px'
-
-              // translate when resizing from top or left edges
               x += event.deltaRect.left
-              y += event.deltaRect.top
-
-              target.style.transform = 'translate(' + x + 'px,' + y + 'px)'
-
+              target.style.transform = 'translate(' + x + 'px,' + 0 + 'px)'
               target.setAttribute('data-x', x)
-              target.setAttribute('data-y', y)
               target.textContent = Math.round((event.rect.width * allDuration) / allWidth)
             }
           }
@@ -510,12 +470,10 @@ interact('.frame-line')
       end(event) {
         const delay = ((event.target.getBoundingClientRect().left - fsLine) * allDuration) / allWidth
         const duration = (event.target.getBoundingClientRect().width * allDuration) / allWidth
-        console.log(delay);
-        console.log(duration);
         const animId = event.target.id
         for (const obj of keyFrames) {
           if (obj.id === animId) {
-            if(delay >= 0) {
+            if (delay >= 0) {
               obj.delay = delay;
             }
             obj.duration = duration;
@@ -525,12 +483,9 @@ interact('.frame-line')
       }
     },
     modifiers: [
-      // keep the edges inside the parent
       interact.modifiers.restrictEdges({
         outer: 'parent'
       }),
-
-      // minimum size
     ],
 
     inertia: true
@@ -541,23 +496,16 @@ interact('.frame-line')
   .draggable({
     startAxis: 'x',
     lockAxis: 'x',
-    // enable inertial throwing
     inertia: true,
-    // keep the element within the area of it's parent
     modifiers: [
       interact.modifiers.restrictRect({
         restriction: 'parent',
         endOnly: true
       })
     ],
-    // enable autoScroll
     autoScroll: true,
-
     listeners: {
-      // call this function on every dragmove event
       move: dragMoveListener,
-
-      // call this function on every dragend event
       end(event) {
         const delay = ((event.target.getBoundingClientRect().left - fsLine) * allDuration) / allWidth
         const animId = event.target.id
@@ -578,83 +526,41 @@ function dragMoveListener(event) {
   const parentRight = document.getElementById("tm-rul").lastChild.getBoundingClientRect()
   if (sibling.length === 0) {
     if (event.rect.left > parentLeft.right && event.rect.right < parentRight.left) {
-      // keep the dragged position in the data-x/data-y attributes
       var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx
-      var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
-
-      // translate the element
-      target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
-
-      // update the posiion attributes
+      target.style.transform = 'translate(' + x + 'px, ' + 0 + 'px)'
       target.setAttribute('data-x', x)
-      target.setAttribute('data-y', y)
     }
   } else if (sibling.length === 1) {
     const siblingRect = sibling[0].getBoundingClientRect()
     if (event.rect.left > parentLeft.right && event.rect.right < parentRight.left && siblingRect.left > event.rect.right) {
-      // keep the dragged position in the data-x/data-y attributes
       var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx
-      var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
-
-      // translate the element
-      target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
-
-      // update the posiion attributes
+      target.style.transform = 'translate(' + x + 'px, ' + 0 + 'px)'
       target.setAttribute('data-x', x)
-      target.setAttribute('data-y', y)
     } else if (event.rect.left > parentLeft.right && event.rect.right < parentRight.left && siblingRect.right < event.rect.left) {
-      // keep the dragged position in the data-x/data-y attributes
       var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx
-      var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
-
-      // translate the element
-      target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
-
-      // update the posiion attributes
+      target.style.transform = 'translate(' + x + 'px, ' + 0 + 'px)'
       target.setAttribute('data-x', x)
-      target.setAttribute('data-y', y)
     }
   } else if (sibling.length > 1) {
     const prev = $(`#${target.id}`).prev()
     const next = $(`#${target.id}`).next()
     if (prev.length > 0 && next.length > 0) {
       if (event.rect.left > parentLeft.right && event.rect.right < parentRight.left && event.rect.left > prev[0].getBoundingClientRect().right && event.rect.right < next[0].getBoundingClientRect().left) {
-        // keep the dragged position in the data-x/data-y attributes
         var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx
-        var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
-
-        // translate the element
-        target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
-
-        // update the posiion attributes
+        target.style.transform = 'translate(' + x + 'px, ' + 0 + 'px)'
         target.setAttribute('data-x', x)
-        target.setAttribute('data-y', y)
       }
     } else if (next.length === 0) {
       if (event.rect.left > parentLeft.right && event.rect.right < parentRight.left && event.rect.left > prev[0].getBoundingClientRect().right) {
-        // keep the dragged position in the data-x/data-y attributes
         var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx
-        var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
-
-        // translate the element
-        target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
-
-        // update the posiion attributes
+        target.style.transform = 'translate(' + x + 'px, ' + 0 + 'px)'
         target.setAttribute('data-x', x)
-        target.setAttribute('data-y', y)
       }
     } else if (prev.length === 0) {
       if (event.rect.left > parentLeft.right && event.rect.right < parentRight.left && event.rect.right < next[0].getBoundingClientRect().left) {
-        // keep the dragged position in the data-x/data-y attributes
         var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx
-        var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
-
-        // translate the element
-        target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
-
-        // update the posiion attributes
+        target.style.transform = 'translate(' + x + 'px, ' + 0 + 'px)'
         target.setAttribute('data-x', x)
-        target.setAttribute('data-y', y)
       }
     }
   }
@@ -666,52 +572,34 @@ interact('.dargable-pointer')
   .draggable({
     startAxis: 'x',
     lockAxis: 'x',
-    // enable inertial throwing
     inertia: true,
-    // keep the element within the area of it's parent
     modifiers: [
       interact.modifiers.restrictRect({
         restriction: 'parent',
         endOnly: true
       })
     ],
-    // enable autoScroll
     autoScroll: true,
-
     listeners: {
-      // call this function on every dragmove event
       move(event) {
         const target = event.target
-        if(event.rect.left >= fsLine) {
+        if (event.rect.left >= fsLine) {
           var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx
-          var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
-
-          // translate the element
-          target.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
-
-          // update the posiion attributes
+          target.style.transform = 'translate(' + x + 'px, ' + 0 + 'px)'
           target.setAttribute('data-x', x)
-          target.setAttribute('data-y', y)
-          $('.moment-pointer').css('background-color' , 'red')
-          $('#count-up').css({'background-color':'red' , 'border-color' : 'red'})
+          $('.moment-pointer').css('background-color', 'red')
+          $('#count-up').css({ 'background-color': 'red', 'border-color': 'red' })
           const clickPos = event.rect.left
           const scroll = $('#sortable').scrollLeft()
           const clickTime = (((clickPos - fsLine + scroll) * allDuration) / allWidth) / 1000
           tl.pause(clickTime)
-          hunSecond = (clickTime * 100)
-          var minute = Math.floor((hunSecond) / 6000)
-          var seconde = Math.floor((hunSecond - minute * 6000) / 100)
-          var hSeconde = Math.floor(hunSecond - (seconde * 100 + minute * 6000))
-          $("#count-up").html(`${minute < 10 ? "0" + minute : minute} : ${seconde < 10 ? "0" + seconde : seconde} : ${hSeconde < 10 ? "0" + hSeconde : hSeconde}`)
-
-        }else if((parseFloat(target.getAttribute('data-x'))) < fsLine - 2) {
-          $('.moment-pointer').css('background-color' , '')
-          $('#count-up').css({'background-color':'#0d0d0e' , 'border-color' : '#777c80'})
+          clickHandler(clickTime)
+        } else if ((parseFloat(target.getAttribute('data-x'))) < fsLine - 2) {
+          $('.moment-pointer').css('background-color', '')
+          $('#count-up').css({ 'background-color': '#0d0d0e', 'border-color': '#777c80' })
           $("#count-up").html('EDITOR')
         }
       },
-
-      // call this function on every dragend event
       end(event) {
         dargStatus = false
       }
@@ -722,32 +610,29 @@ interact('.dargable-pointer')
     }
   })
 
- //Mouse pointer
- $("#sortable").mousemove(function (event) {
-   if(dargStatus === false) {
-     const bottom = document.getElementById("tm-rul").firstChild.getBoundingClientRect().bottom
-     $('.mouse-pointer').css('height', `${$('.moment-pointer').height()}px`)
-     if (fsLine <= event.originalEvent.clientX <= lsLine && event.originalEvent.clientY > bottom) {
-       $(".mouse-pointer").css('display', 'block')
-       $(".mouse-pointer").css('left', `${(event.originalEvent.clientX - 2)}px`)
-       const off = $('.mouse-pointer')[0].offsetLeft + $('#sortable').scrollLeft()
-       const msPos = ((off - fsLine) * allDuration) / allWidth
-       var minute = Math.floor((msPos) / 60000)
-       var seconde = Math.floor((msPos - minute * 60000) / 1000)
-       var hSeconde = Math.floor((msPos - (seconde * 1000 + minute * 60000)) / 10)
-       $("#count-mouse").html(`${minute < 10 ? "0" + minute : minute} : ${seconde < 10 ? "0" + seconde : seconde} : ${hSeconde < 10 ? "0" + hSeconde : hSeconde}`)
-     }
-     if (event.originalEvent.clientX < fsLine || event.originalEvent.clientX > lsLine) {
-       $(".mouse-pointer").css('display', 'none')
-     }
-   }
- });
- $("#sortable").mouseleave(function () {
-   $(".mouse-pointer").css('display', 'none')
- });
- $("#tm-controller").mousemove(function () {
-   $(".mouse-pointer").css('display', 'none')
- });
+//? Mouse pointer
+$("#sortable").mousemove(function (event) {
+  if (dargStatus === false) {
+    const bottom = document.getElementById("tm-rul").firstChild.getBoundingClientRect().bottom
+    $('.mouse-pointer').css('height', `${$('.moment-pointer').height()}px`)
+    if (fsLine <= event.originalEvent.clientX <= lsLine && event.originalEvent.clientY > bottom) {
+      $(".mouse-pointer").css('display', 'block')
+      $(".mouse-pointer").css('left', `${(event.originalEvent.clientX - 2)}px`)
+      const off = $('.mouse-pointer')[0].offsetLeft + $('#sortable').scrollLeft()
+      const msPos = ((off - fsLine) * allDuration) / allWidth
+      var minute = Math.floor((msPos) / 60000)
+      var seconde = Math.floor((msPos - minute * 60000) / 1000)
+      var hSeconde = Math.floor((msPos - (seconde * 1000 + minute * 60000)) / 10)
+      $("#count-mouse").html(`${minute < 10 ? "0" + minute : minute} : ${seconde < 10 ? "0" + seconde : seconde} : ${hSeconde < 10 ? "0" + hSeconde : hSeconde}`)
+    }
+  }
+});
+$("#sortable").mouseleave(function () {
+  $(".mouse-pointer").css('display', 'none')
+});
+$("#tm-controller").mousemove(function () {
+  $(".mouse-pointer").css('display', 'none')
+});
 
 //? On flags
 $(".frame-line").click(function (event) {
@@ -767,15 +652,11 @@ $(".sort-row").click(function (event) {
 });
 
 //? Stick rul
-$("#sortable").scroll(function (event) {
+$("#sortable").scroll(function () {
   $('#tm-controller').css('transform', `translate(0px, ${$("#sortable").scrollTop()}px)`)
-  if(clickCounter !== 0) {
-    const trans = $('.moment-pointer').css('transform').replace(/[^0-9\-.,]/g, '').split(',')
-    const x =trans[4]
-    // $('.moment-pointer').css('transform', `translate3d(${x}px, 0px, 0px)`)
+  if (clickCounter !== 0) {
     $('.moment-pointer').css('top', `${$("#sortable").scrollTop() + 10}px`)
-  }else {
-    // $('.moment-pointer').css('transform', `translate3d(0px, ${$("#sortable").scrollTop()}px, 0px)`)
+  } else {
     $('.moment-pointer').css('top', `${$("#sortable").scrollTop() + 10}px`)
   }
 });
@@ -783,50 +664,42 @@ $("#sortable").scroll(function (event) {
 
 // ? Click rul
 $('#tm-rul').click(function (event) {
-  $('.moment-pointer').css('background-color' , 'red')
-  $('#count-up').css({'background-color':'red' , 'border-color' : 'red'})
+  $('.moment-pointer').css('background-color', 'red')
+  $('#count-up').css({ 'background-color': 'red', 'border-color': 'red' })
   const clickPos = event.screenX
   const scroll = $('#sortable').scrollLeft()
   const clickTime = (((clickPos - fsLine + scroll) * allDuration) / allWidth) / 1000
   const scPos = scroll + clickPos
-  if($('.la-square').css('display') === 'none') {
-    if(clickCounter === 0) {
-      if((fsLine - .25) <= scPos && scPos <= (lsLine + .25)) {
+  if ($('.la-square').css('display') === 'none') {
+    if (clickCounter === 0) {
+      if ((fsLine - .25) <= scPos && scPos <= (lsLine + .25)) {
         $('.moment-pointer').css('transform', `translate3d(${scPos - fsLine}px, 0px, 0px)`)
         $('.moment-pointer').css('top', `${$("#sortable").scrollTop() + 10}px`)
         tl.pause(clickTime)
-        hunSecond = (clickTime * 100)
-        var minute = Math.floor((hunSecond) / 6000)
-        var seconde = Math.floor((hunSecond - minute * 6000) / 100)
-        var hSeconde = Math.floor(hunSecond - (seconde * 100 + minute * 6000))
-        $("#count-up").html(`${minute < 10 ? "0" + minute : minute} : ${seconde < 10 ? "0" + seconde : seconde} : ${hSeconde < 10 ? "0" + hSeconde : hSeconde}`)
-      }else {
+        clickHandler(clickTime)
+      } else {
         return null
       }
-    }else if(waitPoint < (scPos - fsLine) && clickCounter > 0) {
-        tl.pause(clickTime)
-        $('.moment-pointer').css('transform', `translate3d(${scPos - fsLine}px, 0px, 0px)`)
-        $('.moment-pointer').css('top', `${$("#sortable").scrollTop() + 10}px`)
-        hunSecond = (clickTime * 100)
-        var minute = Math.floor((hunSecond) / 6000)
-        var seconde = Math.floor((hunSecond - minute * 6000) / 100)
-        var hSeconde = Math.floor(hunSecond - (seconde * 100 + minute * 6000))
-        $("#count-up").html(`${minute < 10 ? "0" + minute : minute} : ${seconde < 10 ? "0" + seconde : seconde} : ${hSeconde < 10 ? "0" + hSeconde : hSeconde}`)
-    }else if (waitPoint => (scPos - fsLine) && clickCounter > 0) {
+    } else if (waitPoint < (scPos - fsLine) && clickCounter > 0) {
       tl.pause(clickTime)
-      hunSecond = (clickTime * 100)
-      var minute = Math.floor((hunSecond) / 6000)
-      var seconde = Math.floor((hunSecond - minute * 6000) / 100)
-      var hSeconde = Math.floor(hunSecond - (seconde * 100 + minute * 6000))
-      $("#count-up").html(`${minute < 10 ? "0" + minute : minute} : ${seconde < 10 ? "0" + seconde : seconde} : ${hSeconde < 10 ? "0" + hSeconde : hSeconde}`)
+      $('.moment-pointer').css('transform', `translate3d(${scPos - fsLine}px, 0px, 0px)`)
+      $('.moment-pointer').css('top', `${$("#sortable").scrollTop() + 10}px`)
+      clickHandler(clickTime)
+    } else if (waitPoint => (scPos - fsLine) && clickCounter > 0) {
+      tl.pause(clickTime)
+      clickHandler(clickTime)
     }
-  }else {
+  } else {
     tl.seek(clickTime)
-    hunSecond = (clickTime * 100)
-    var minute = Math.floor((hunSecond) / 6000)
-    var seconde = Math.floor((hunSecond - minute * 6000) / 100)
-    var hSeconde = Math.floor(hunSecond - (seconde * 100 + minute * 6000))
-    $("#count-up").html(`${minute < 10 ? "0" + minute : minute} : ${seconde < 10 ? "0" + seconde : seconde} : ${hSeconde < 10 ? "0" + hSeconde : hSeconde}`)
+    clickHandler(clickTime)
   }
-  
+
 })
+
+const clickHandler = (t) => {
+  hunSecond = (t * 100)
+  var minute = Math.floor((hunSecond) / 6000)
+  var seconde = Math.floor((hunSecond - minute * 6000) / 100)
+  var hSeconde = Math.floor(hunSecond - (seconde * 100 + minute * 6000))
+  $("#count-up").html(`${minute < 10 ? "0" + minute : minute} : ${seconde < 10 ? "0" + seconde : seconde} : ${hSeconde < 10 ? "0" + hSeconde : hSeconde}`)
+}
