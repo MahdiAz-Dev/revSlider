@@ -198,7 +198,11 @@ for (let i = 0; i < objectData.length; i++) {
       const x = `#${keyFrames[j].mid}-line`
       const width = ((keyFrames[j].duration * allWidth) / allDuration)
       const delay = ((keyFrames[j].delay * allWidth) / allDuration)
-      $(x).append(`<div id=${keyFrames[j].id} class=frame-line style="left:${delay + 10}px ; min-width:${width}px">${keyFrames[j].duration}</div>`)
+      if (keyFrames[j].role === 'outer') {
+        $(x).append(`<div id=${keyFrames[j].id} class='outer-frame-line' style="left:${delay + 10}px ; min-width:${width}px">${keyFrames[j].duration}</div>`)
+      } else {
+        $(x).append(`<div id=${keyFrames[j].id} class=frame-line style="left:${delay + 10}px ; min-width:${width}px">${keyFrames[j].duration}</div>`)
+      }
     }
   }
 }
@@ -438,7 +442,8 @@ interact('.frame-line')
           const prev = $(`#${target.id}`).prev()
           const next = $(`#${target.id}`).next()
           if (prev.length > 0 && next.length > 0) {
-            if (event.rect.left > parentLeft.right && event.rect.right < parentRight.left && event.rect.left > prev[0].getBoundingClientRect().right && event.rect.right < next[0].getBoundingClientRect().left) {
+            if (event.rect.left > prev[0].getBoundingClientRect().right && event.rect.right < next[0].getBoundingClientRect().left) {
+              console.log('ok');
               var x = (parseFloat(target.getAttribute('data-x')) || 0)
               target.style.minWidth = event.rect.width + 'px'
               x += event.deltaRect.left
@@ -447,7 +452,7 @@ interact('.frame-line')
               target.textContent = Math.round((event.rect.width * allDuration) / allWidth)
             }
           } else if (next.length === 0) {
-            if (event.rect.left > parentLeft.right && event.rect.right < parentRight.left && event.rect.left > prev[0].getBoundingClientRect().right) {
+            if (event.rect.right < parentRight.left && event.rect.left > prev[0].getBoundingClientRect().right) {
               var x = (parseFloat(target.getAttribute('data-x')) || 0)
               target.style.minWidth = event.rect.width + 'px'
               x += event.deltaRect.left
@@ -465,6 +470,49 @@ interact('.frame-line')
               target.textContent = Math.round((event.rect.width * allDuration) / allWidth)
             }
           }
+        }
+      },
+      end(event) {
+        const delay = ((event.target.getBoundingClientRect().left - fsLine) * allDuration) / allWidth
+        const duration = (event.target.getBoundingClientRect().width * allDuration) / allWidth
+        const animId = event.target.id
+        for (const obj of keyFrames) {
+          if (obj.id === animId) {
+            if (delay >= 0) {
+              obj.delay = delay;
+            }
+            obj.duration = duration;
+            break;
+          }
+        }
+      }
+    },
+    modifiers: [
+      interact.modifiers.restrictEdges({
+        outer: 'parent'
+      }),
+    ],
+
+    inertia: true
+  })
+
+interact('.outer-frame-line')
+  .resizable({
+    edges: { left: true, right: true },
+
+    listeners: {
+      move(event) {
+        var target = event.target
+        const next = $(`#${target.id}`).next()
+        console.log(next[0].getBoundingClientRect().right);
+        console.log(event.rect.left);
+        if (event.rect.right < parentRight.left && event.rect.left > next[0].getBoundingClientRect().right) {
+          var x = (parseFloat(target.getAttribute('data-x')) || 0)
+          target.style.minWidth = event.rect.width + 'px'
+          x += event.deltaRect.left
+          target.style.transform = 'translate(' + x + 'px,' + 0 + 'px)'
+          target.setAttribute('data-x', x)
+          target.textContent = Math.round((event.rect.width * allDuration) / allWidth)
         }
       },
       end(event) {
