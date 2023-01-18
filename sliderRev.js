@@ -306,15 +306,17 @@ function timerA() {
     //   // something really bad happened. Maybe the browser (tab) was inactive?
     //   // possibly special handling to avoid futile "catch up" run
     // }
-    ++hunSecond
-    var minute = Math.floor((hunSecond) / 6000)
-    var seconde = Math.floor((hunSecond - minute * 6000) / 100)
-    var hSeconde = Math.floor(hunSecond - (seconde * 100 + minute * 6000))
+    var time = parseFloat(tl.time().toFixed(2))
+    var minute = time < 60 ? 0 : Math.floor((time) / 60)
+    var seconde = time < 60 ? Math.floor(time) : (Math.floor(time) % 60)
+    var hSeconde = Math.floor((time - Math.floor(time)) * 100)
     $("#count-up").html(`${minute < 10 ? "0" + minute : minute} : ${seconde < 10 ? "0" + seconde : seconde} : ${hSeconde < 10 ? "0" + hSeconde : hSeconde}`)
     expected += interval;
     timer = setTimeout(step, Math.max(0, interval - dt));
   }
 }
+
+
 
 
 //? Reset func 
@@ -343,8 +345,8 @@ const outerPlay = () => {
     $('.moment-pointer').css('background-color', '')
     $('#count-up').css({ 'background-color': '#0d0d0e', 'border-color': '#777c80' })
     $("#count-up").html('EDITOR')
-    $(".la-square").css('display', 'none')
-    $(".la-play").css('display', 'block')
+    $(".la-square").css('display', 'block')
+    $(".la-play").css('display', 'none')
     $('.moment-pointer').css('left', `${fsLine}px`)
     $('.moment-pointer').removeClass('dargable-pointer')
     $('.moment-pointer').css('transform', `translate(0px , 0px)`)
@@ -368,9 +370,10 @@ const outerPlay = () => {
       ease: a.ease,
       backgroundColor: a.backgroundColor
     }, (a.delay / 1000));
+  }
     tl.to(".moment-pointer", {
-      x: allWidth,
-      duration: (allDuration / 1000),
+      x: (tl.duration() * allWidth) / (allDuration / 1000),
+      duration: tl.duration(),
       ease: 'none',
       onComplete: function () {
         tl.restart();
@@ -384,7 +387,7 @@ const outerPlay = () => {
         $(".la-play").css('display', 'block')
       }
     }, 0);
-  }
+    timerA()
 }
 
 //* Sortable rows
@@ -651,8 +654,10 @@ interact('.dargable-pointer')
         dargStatus = false
       }
       ,
-      start() {
+      start(event) {
         dargStatus = true
+        var firstPos = $('.moment-pointer').css('transform').split(/[()]/)[1].split(',')[4];
+        event.target.setAttribute('data-x', firstPos)
       }
     }
   })
