@@ -54,6 +54,38 @@ const clickHandler = (t , hunSecond) => {
     var seconde = Math.floor((hunSecond - minute * 6000) / 100)
     var hSeconde = Math.floor(hunSecond - (seconde * 100 + minute * 6000))
     $("#count-up").html(`${minute < 10 ? "0" + minute : minute} : ${seconde < 10 ? "0" + seconde : seconde} : ${hSeconde < 10 ? "0" + hSeconde : hSeconde}`)
-  }
+}
 
-export { playHeadDeactiver, playHeadActiver , backgroundObjRender , imgObjRender ,textObjRender , animationBarRender , clickHandler , playHeadStatus}
+const defineTimeLine = (data , tl , type) => {
+    if(type === 'normal') {
+        for (const a of data) {
+            if (a.role !== 'outer') {
+              tl.to(`#${a.mid}-el`, {
+                x: a.x,
+                duration: (a.duration / 1000),
+                rotation: a.rotation,
+                rotationY: a.rotationY,
+                fontSize: a.fontSize,
+                color: a.color,
+                ease: a.ease,
+                backgroundColor: a.backgroundColor
+              }, (a.delay / 1000));
+            }
+        }
+    }else {
+        for (const a of data) {
+            tl.to(`#${a.mid}-el`, {
+              x: a.x,
+              duration: (a.duration / 1000),
+              rotation: a.rotation,
+              rotationY: a.rotationY,
+              fontSize: a.fontSize,
+              color: a.color,
+              ease: a.ease,
+              backgroundColor: a.backgroundColor
+            }, (a.delay / 1000));
+          }
+    }
+}
+
+export { playHeadDeactiver, playHeadActiver , backgroundObjRender , imgObjRender ,textObjRender , animationBarRender , clickHandler , playHeadStatus , defineTimeLine}
