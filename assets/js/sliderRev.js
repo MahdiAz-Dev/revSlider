@@ -1,4 +1,4 @@
-import { playHeadDeactiver, playHeadActiver, backgroundObjRender, imgObjRender, textObjRender, animationBarRender, clickHandler , playHeadStatus } from "./utils.js";
+import { playHeadDeactiver, playHeadActiver, backgroundObjRender, imgObjRender, textObjRender, animationBarRender, clickHandler , playHeadStatus , defineTimeLine } from "./utils.js";
 
 //* Fake data
 //? Time line duration
@@ -105,7 +105,7 @@ const keyFrames = [
     fillMode: 'forwards',
     x: 1000,
     role: 'outer',
-    ease: 'none'
+    ease: 'linear'
 
   },
   {
@@ -121,7 +121,7 @@ const keyFrames = [
     fontSize: 30,
     color: 'red',
     role: '',
-    ease: 'none'
+    ease: 'linear'
   },
   {
     id: "key-4",
@@ -135,7 +135,7 @@ const keyFrames = [
     fillMode: 'forwards',
     rotationY: 60,
     role: '',
-    ease: 'none'
+    ease: 'linear'
   },
   {
     id: "key-3",
@@ -149,7 +149,7 @@ const keyFrames = [
     fillMode: 'forwards',
     backgroundColor: 'blue',
     role: '',
-    ease: 'none'
+    ease: 'linear'
   }
 
 ]
@@ -231,20 +231,21 @@ $('.controller-cover').css('top', `${ctrl.offset().top}px`)
 //? Timeline
 
 $(document).ready(function () {
-  for (const a of keyFrames) {
-    if (a.role !== 'outer') {
-      tl.to(`#${a.mid}-el`, {
-        x: a.x,
-        duration: (a.duration / 1000),
-        rotation: a.rotation,
-        rotationY: a.rotationY,
-        fontSize: a.fontSize,
-        color: a.color,
-        ease: a.ease,
-        backgroundColor: a.backgroundColor
-      }, (a.delay / 1000));
-    }
-  }
+  // for (const a of keyFrames) {
+  //   if (a.role !== 'outer') {
+  //     tl.to(`#${a.mid}-el`, {
+  //       x: a.x,
+  //       duration: (a.duration / 1000),
+  //       rotation: a.rotation,
+  //       rotationY: a.rotationY,
+  //       fontSize: a.fontSize,
+  //       color: a.color,
+  //       ease: a.ease,
+  //       backgroundColor: a.backgroundColor
+  //     }, (a.delay / 1000));
+  //   }
+  // }
+  defineTimeLine(keyFrames , tl , timeLineStatus)
 })
 const resetTimeline = () => {
   tl.pause()
@@ -273,24 +274,7 @@ $(".la-play").click(function () {
     for (const obj of objectData) {
       tl.killTweensOf(`#${obj.id}-el`);
     }
-    for (const a of keyFrames) {
-      if (a.role !== 'outer') {
-        tl.to(`#${a.mid}-el`, {
-          x: a.x,
-          duration: (a.duration / 1000),
-          rotation: a.rotation,
-          rotationY: a.rotationY,
-          fontSize: a.fontSize,
-          color: a.color,
-          ease: a.ease,
-          backgroundColor: a.backgroundColor
-        }, (a.delay / 1000));
-      }
-    }
-    tl.pause()
-    tl.progress(0);
-    playHeadActiver(fsLine)
-    tl.play()
+    defineTimeLine(keyFrames , tl , timeLineStatus)
   }
   tl.pause()
   tl.progress(0);
@@ -310,18 +294,7 @@ $('#outerPlay').click(function () {
     for (const obj of objectData) {
       tl.killTweensOf(`#${obj.id}-el`);
     }
-    for (const a of keyFrames) {
-      tl.to(`#${a.mid}-el`, {
-        x: a.x,
-        duration: (a.duration / 1000),
-        rotation: a.rotation,
-        rotationY: a.rotationY,
-        fontSize: a.fontSize,
-        color: a.color,
-        ease: a.ease,
-        backgroundColor: a.backgroundColor
-      }, (a.delay / 1000));
-    }
+    defineTimeLine(keyFrames , tl , timeLineStatus)
   }
   tl.pause()
   tl.progress(0);
@@ -455,9 +428,14 @@ $('#tm-rul').click(function (event) {
         }
         const delay = ((event.target.getBoundingClientRect().left - fsLine + $('#sortable').scrollLeft()) * allDuration) / allWidth
         const animId = event.target.id
+        console.log(delay);
         for (const obj of keyFrames) {
           if (obj.id === animId) {
             obj.delay = delay;
+            for (const obj of objectData) {
+              tl.killTweensOf(`#${obj.id}-el`);
+            }
+            defineTimeLine(keyFrames , tl , timeLineStatus)
             break;
           }
         }
@@ -517,11 +495,15 @@ $(".frame-line").resizable({
           obj.delay = delay;
         }
         obj.duration = duration;
+        for (const obj of objectData) {
+          tl.killTweensOf(`#${obj.id}-el`);
+        }
+        defineTimeLine(keyFrames , tl , timeLineStatus)
         break;
       }
     }
   },
-});;
+});
 
 const resizeController = (event, ui) => {
   if (prevE && nextE) {
@@ -559,6 +541,7 @@ $(".moment-pointer").draggable({
   scrollSensitivity: 100,
   axis: "x",
   containment: "parent",
+  cursor: "grab",
   start: function (event, ui) {
     dargStatus = true
     ui.position.left = 0
