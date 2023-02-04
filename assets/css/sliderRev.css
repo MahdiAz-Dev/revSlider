@@ -428,3 +428,9 @@ body {
     border: 1.5px solid #777c80;
     color: #fff;
 }
+.ui-resizable-handle  {
+    cursor: ew-resize !important;
+}
+.frame-line {
+    cursor: grab;
+}
